@@ -3,6 +3,9 @@ import ListView from "@/views/ListView";
 import AddStream from "@/components/AddStream";
 import StreamList from "@/components/StreamList";
 import EditStream from "@/components/EditStream";
+import RuleList from "@/components/RuleList";
+import AddRule from "@/components/AddRule";
+import EditRule from "@/components/EditRule";
 
 const routes = [
   {
@@ -24,6 +27,21 @@ const routes = [
     path: '/stream/editStream',
     name: 'EditStream',
     component: EditStream
+  },
+  {
+    path: '/rule',
+    name: 'RuleList',
+    component: RuleList
+  },
+  {
+    path: '/rule/addRule',
+    name: 'AddRule',
+    component: AddRule
+  },
+  {
+    path: '/rule/editRule',
+    name: 'EditRule',
+    component: EditRule
   }
 ]
 

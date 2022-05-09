@@ -25,27 +25,47 @@
         <a>{{ record.id}}</a>
       </template>
       <template v-else-if="column.key === 'status metrics'" >
-        <a-button style="background: none; border: none;" @click="statusMetricsShow">
+        <a-button style="background: none; border: none;" @click="enableMetricShow(record.id)">
           <template #icon><line-chart-outlined style="color: cornflowerblue;"/></template>
         </a-button>
       </template>
       <template v-else-if="column.key === 'operation'">
-        <a-button style="background: #28A745; padding: 2px 2px; border-radius: 6px;" @click="startRule(rule.id)">
+        <a-button :size="'small'" style="background: #28A745; padding: 2px 2px; border-radius: 5px;" @click="startRule(record.id)">
           <span style="font-weight: bold; color: white; font-size: 12px;">start</span>
         </a-button>
-        <a-button style="background: #17A2B8; padding: 2px 2px; border-radius: 6px; margin: 0px 4px" @click="restartRule(rule.id)">
+        <a-button :size="'small'" style="background: #17A2B8; padding: 2px 2px; border-radius: 5px; margin: 0px 4px" @click="restartRule(record.id)">
           <span style="font-weight: bold; color: white; font-size: 12px">restart</span>
         </a-button>
-        <a-button style="background: #DC3545; padding: 2px 2px; border-radius: 6px" @click="stopRule(rule.id)">
+        <a-button :size="'small'" style="background: #DC3545; padding: 2px 2px; border-radius: 5px" @click="stopRule(record.id)">
           <span style="font-weight: bold; color: white; font-size: 12px">stop</span>
         </a-button>
       </template>
     </template>
   </a-table>
+
+  <a-card>
+    <template #title>
+      <line-chart-outlined style="margin-right: 20px; color: cornflowerblue"/>
+      <span style="font-weight: bold">{{statusMetricsRuleID}}</span>
+      <span style="margin-left: 3px">Status Metrics</span>
+      <a-button :size="'small'" style="margin-left: 5px; margin-top: 8px; padding-left: 8px; padding-right: 8px; background: #007BFF; border-radius: 5px" @click="refreshMetric">
+        <template #icon><sync-outlined style="color: white"/></template>
+        <span style="font-weight: bold; color: white; font-size: 10px">Refresh</span>
+      </a-button>
+    </template>
+    <template #extra>
+      <a-button :size="'small'" style="background: #DC3545; float: right;" @click="MetricShowClose">
+        <template #icon><close-outlined style="color: white; font-size: 10px"/></template>
+      </a-button>
+    </template>
+
+<!--    TODO-->
+    <p>{{ruleStatusMetrics}}</p>
+  </a-card>
 </template>
 
 <script>
-import { UnorderedListOutlined, SyncOutlined, PlusCircleFilled, EditFilled, DeleteFilled, LineChartOutlined } from '@ant-design/icons-vue';
+import { UnorderedListOutlined, SyncOutlined, PlusCircleFilled, EditFilled, DeleteFilled, LineChartOutlined, CloseOutlined } from '@ant-design/icons-vue';
 import {defineComponent} from 'vue';
 
 const columns = [{
@@ -81,7 +101,8 @@ export default defineComponent({
     PlusCircleFilled,
     EditFilled,
     DeleteFilled,
-    LineChartOutlined
+    LineChartOutlined,
+    CloseOutlined
   },
   setup() {
     const rowSelection = {
@@ -99,6 +120,18 @@ export default defineComponent({
       columns,
       rowSelection,
     };
+  },
+  methods: {
+    addRule(){
+      this.$router.push({
+        path: '/rule/addRule'
+      })
+    },
+    editRule(){
+      this.$router.push({
+        path: '/rule/editRule'
+      })
+    }
   }
 })
 </script>

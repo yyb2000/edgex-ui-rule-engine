@@ -16,11 +16,11 @@
       <a-list-item style="padding-left: 15px; padding-right: 10px; margin-top: auto;">
         <tags-filled style="padding-right: 5px; font-size: 30px; color: gray"/>
         {{item}}
-        <a-button style="background: #DC3545; float: right; padding-top: 0; padding-bottom: 0; padding-left: 5px; padding-right: 5px" @click="deleteStream">
+        <a-button :size="'small'" style="background: #DC3545; float: right; padding: 0 5px; border-radius: 5px" @click="deleteStream">
           <template #icon><delete-filled style="color: white" /></template>
           <span style="font-weight: bold; color: white; font-size: small">Delete</span>
         </a-button>
-        <a-button style="background: #17A2B8; float: right; padding-top: 0; padding-bottom: 0; padding-left: 5px; padding-right: 5px" @click="editStream">
+        <a-button :size="'small'" style="background: #17A2B8; float: right; padding: 0 5px; border-radius: 5px" @click="editStream">
           <template #icon><edit-filled style="color: white" /></template>
           <span style="font-weight: bold; color: white; font-size: small">Edit</span>
         </a-button>
