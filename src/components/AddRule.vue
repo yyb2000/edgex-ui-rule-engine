@@ -44,7 +44,7 @@
               </a-form-item>
 
 <!--              TODO-->
-<!--              将sql编辑器内容与表单绑定-->
+<!--              将sql编辑器内容与表单绑定 不作为表单存在，而是后续this.rule.sql = this.sqlEditor.getValue()将编辑器内容赋值给rule对应部分 需要单独写validate函数进行校验-->
               <a-form-item
                 name="ruleSql"
                 :rules="[{required: true, message: 'SQL can\'t be empty!'}]"
@@ -59,9 +59,9 @@
                   </a-popover>
                 </template>
 
-                <div class="card-header" style="background: #00000008; height: 36px">
+                <div class="card-header" style="background: #00000008; height: 44px">
                   <span style="font-weight: bold; font-size: 15px">
-                    <console-sql-outlined style="color: cornflowerblue; padding-left: 10px; padding-top: 10px; font-size: large"/>
+                    <console-sql-outlined style="color: cornflowerblue; padding-left: 17px; padding-top: 10px; font-size: large"/>
                     SQL Editor
                   </span>
                   <span style="float: right; color: #DC3545; font-size: 15px; padding-right: 10px; padding-top: 10px">
@@ -83,7 +83,49 @@
                 </SqlEditor>
               </a-form-item>
 
+              <a-form-item
+                name="ruleActions"
+                :rules="[{required: true, message: 'At least one rule action required!'}]"
+              >
+                <template #label>
+                  <span style="margin-right: 10px">Action</span>
+                  <a-popover title="tips" trigger="hover" placement="right">
+                    <template #content>
+                      <p style="width: 274px">where the sql result data sent to.</p>
+                    </template>
+                    <question-circle-outlined style="font-size: large"/>
+                  </a-popover>
+                </template>
+                <div class="card-header" style="background: #00000008; height: 44px">
+                  <span style="font-weight: bold; font-size: 15px">
+                    <plus-outlined style="color: #17A2B8; padding-left: 17px; padding-top: 10px; font-size: large"/>
+                    Add Action
+                  </span>
+                  <span style="float: right; color: #DC3545; font-size: 15px; padding-right: 10px; padding-top: 10px">
+                    <warning-filled style="color: #DC3545; font-size: large"/>
+                    at least one rule action required!
+                  </span>
+                </div>
+                <div class="card-body">
+                  <sink-list></sink-list>
+                </div>
 
+              </a-form-item>
+
+              <a-form-item
+                  name="advancedOptions"
+              >
+                <template #label>
+                  <span style="margin-right: 10px">Options</span>
+                  <a-popover title="tips" trigger="hover" placement="right">
+                    <template #content>
+                      <p style="width: 274px">Advanced Options</p>
+                    </template>
+                    <question-circle-outlined style="font-size: large"/>
+                  </a-popover>
+                </template>
+                <rule-advanced-options></rule-advanced-options>
+              </a-form-item>
             </a-form>
           </div>
         </div>
@@ -97,10 +139,14 @@ import {defineComponent, ref, reactive} from 'vue';
 import {PlusOutlined, SaveFilled, HomeFilled, QuestionCircleOutlined, MenuUnfoldOutlined, ConsoleSqlOutlined, WarningFilled} from '@ant-design/icons-vue';
 import SqlEditor from "@/components/SqlEditor";
 import StreamList from "@/components/StreamList";
+import SinkList from "@/components/sinks/SinkList";
+import RuleAdvancedOptions from "@/components/RuleAdvancedOptions";
 
 export default defineComponent({
   name: "AddRule",
   components :{
+    RuleAdvancedOptions,
+    SinkList,
     StreamList,
     SqlEditor,
     PlusOutlined,
