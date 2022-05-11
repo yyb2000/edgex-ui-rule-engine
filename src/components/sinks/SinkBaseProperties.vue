@@ -5,7 +5,7 @@
         <div class="card-header" style="background:none;">
           <a-button style="border: none; background: none" @click="collapseToggle">
             <template #icon><tags-filled style="color: #007BFF; font-size: large"/></template>
-            <span style="font-weight: bold; font-size: 15px; color: #007BFF">
+            <span style="font-size: 15px; color: #007BFF">
               Sink Advanced Options
             </span>
             <i aria-disabled="true" v-if="!collapseToggleStatus">
