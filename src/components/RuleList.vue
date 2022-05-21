@@ -43,7 +43,7 @@
     </template>
   </a-table>
 
-  <a-card>
+  <a-card v-if="enableStatus">
     <template #title>
       <line-chart-outlined style="margin-right: 20px; color: cornflowerblue"/>
       <span style="font-weight: bold">{{statusMetricsRuleID}}</span>
@@ -92,6 +92,7 @@ const data = [{
   id: 'demo2',
   status: 'stopped'
 }];
+const enableStatus = false;
 
 export default defineComponent({
   name: "RuleList",
@@ -102,8 +103,13 @@ export default defineComponent({
     EditFilled,
     DeleteFilled,
     LineChartOutlined,
-    CloseOutlined
+    CloseOutlined,
   },
+  data() {
+    return {
+      enableStatus
+    };
+},
   setup() {
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
@@ -131,6 +137,12 @@ export default defineComponent({
       this.$router.push({
         path: '/rule/editRule'
       })
+    },
+    enableMetricShow(){
+      this.enableStatus = true;
+    },
+    MetricShowClose(){
+      this.enableStatus = false;
     }
   }
 })

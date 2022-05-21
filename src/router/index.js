@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+// import { createRouter, createWebHashHistory } from 'vue-router'
 import ListView from "@/views/ListView";
 import AddStream from "@/components/AddStream";
 import StreamList from "@/components/StreamList";
@@ -45,9 +45,9 @@ const routes = [
   }
 ]
 
-const router = createRouter({
-  history: createWebHashHistory(),
-  routes
-})
+// const router = createRouter({
+//   history: createWebHashHistory(),
+//   routes,
+// })
 
-export default router
+export default routes

@@ -12,10 +12,10 @@ import "codemirror/addon/hint/show-hint.css";
 import "codemirror/theme/monokai.css";
 // 引入全局实例
 const CodeMirror = require("codemirror/lib/codemirror");
+
+//引入sql-formatter，支持代码格式化
 import {format} from 'sql-formatter';
-// import sqlFormatter from 'sql-formatter'
-// const sqlformatter = require("sql-formatter");
-//
+
 require("codemirror/addon/edit/matchbrackets");
 require("codemirror/addon/selection/active-line");
 
@@ -189,12 +189,12 @@ export default {
     // },
     // edegxTemplate(){
     //   this.editor.setValue('CREATE STREAM EdgeXStream () WITH ( FORMAT = "JSON", TYPE = "edgex" )');
-    //   console.log('1');
+    //
     // },
     // customTemplate(){
     //   this.editor.setValue('CREATE STREAM demo ( field1 bigint, field2 float ) WITH ( DATASOURCE = "", KEY = "", FORMAT = "JSON", CONF_KEY = "", TYPE = "edgex", STRICT_VALIDATION = "true", TIMESTAMP = "", TIMESTAMP_FORMAT = "", RETAIN_SIZE = "0", SHARED = "false" )');
     //   this.sqlformat();
-    //   console.log('2');
+    //
     // },
     tableInfoChange(val) {
       if (val) {

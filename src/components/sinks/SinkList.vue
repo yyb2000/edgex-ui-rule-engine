@@ -6,6 +6,16 @@
     </a-button>
   </a-card>
 
+  <div class="card-header" style="background: #00000008; height: 44px">
+    <div v-if="addOrEdit.isAdd">
+      <span style="font-weight: bold; font-size: 15px">
+      <plus-outlined style="color: #17A2B8; padding-left: 17px; padding-top: 10px; font-size: large"/>
+      Add Sink
+    </span>
+    </div>
+
+  </div>
+
   <a-card>
     <a-form
         :model="sinkType"
@@ -38,7 +48,7 @@
 
 <script>
 import {defineComponent, reactive} from 'vue';
-import {PlusCircleFilled} from '@ant-design/icons-vue';
+import {PlusCircleFilled, PlusOutlined} from '@ant-design/icons-vue';
 import LogSink from "@/components/sinks/LogSink";
 import MqqtSink from "@/components/sinks/MqqtSink";
 import NopSink from "@/components/sinks/NopSink";
@@ -50,13 +60,19 @@ export default defineComponent({
     MqqtSink,
     LogSink,
     PlusCircleFilled,
+    PlusOutlined,
   },
   setup(){
+    const addOrEdit = reactive({
+      isAdd: true,
+      isEdit: false
+    });
     const sinkType = reactive({
       selectedSinkType: ''
     });
     return {
       sinkType,
+      addOrEdit
     }
   }
 })
