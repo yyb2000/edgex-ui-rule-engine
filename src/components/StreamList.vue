@@ -32,8 +32,9 @@
 <script>
 import { UnorderedListOutlined, SyncOutlined ,PlusCircleFilled, TagsFilled, EditFilled, DeleteFilled} from '@ant-design/icons-vue';
 import {defineComponent} from 'vue';
+import { allStreams } from '@/api/index'
 
-const data = ['race', 'peace']
+const data = [];
 
 export default defineComponent({
   name: "StreamList",
@@ -50,6 +51,9 @@ export default defineComponent({
       data,
     };
   },
+  created() {
+    this.getStreamList();
+  },
   methods: {
     addStream(){
       this.$router.push({
@@ -60,7 +64,25 @@ export default defineComponent({
       this.$router.push({
         path: '/stream/editStream'
       })
-    }
+    },
+    getStreamList() {
+      let _this = this;
+      let streamList = [];
+
+      return allStreams(
+          _this.services,
+          data => {
+            console.log(data);
+
+          },
+          error => {
+            console.log('get health state error:', error)
+          },
+          () => {
+            _this.data = streamList
+          }
+      )
+    },
   }
 })
 </script>

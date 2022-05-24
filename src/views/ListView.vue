@@ -50,7 +50,6 @@ export default defineComponent({
       activeKey: ref('1'),
     };
   },
-
 });
 </script>
 
