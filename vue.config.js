@@ -3,13 +3,13 @@ const { defineConfig } = require('@vue/cli-service')
 
 module.exports = defineConfig({
   transpileDependencies: true,
-  devServer: {
-    port: process.env.VUE_APP_PORT,
-    allowedHosts: 'all',
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-  },
+  // devServer: {
+  //   port: process.env.VUE_APP_PORT,
+  //   allowedHosts: 'all',
+  //   headers: {
+  //     'Access-Control-Allow-Origin': '*',
+  //   },
+  // },
   configureWebpack: {
     output: {
       // 微应用的包名，这里与主应用中注册的微应用名称一致

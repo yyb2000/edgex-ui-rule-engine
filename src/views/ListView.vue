@@ -1,22 +1,28 @@
 <template>
-  <div v-if="agentDown" class="card text-dark bg-light">
-    <div class="card-body mt-5 mb-5 ms-4 me-5 w-auto">
-      <h4 class="card-title fw-bolder">Oops!!! system agent service is unavailable!</h4>
-      <p class="card-text fs-5">
+  <div v-if="agentDown">
+    <a-card>
+      <div class="card-body" style="background: none">
+        <card-header>
+        <span style="font-size: 30px; font-weight: bold">
+          Oops!!! system agent service is unavailable!
+        </span>
+        </card-header>
+        <span>
         This could be a network reason, or it could be that the rule engine microservice is not
         running, make sure there is no network problem or that the system agent service is already
         running!
-      </p>
-      <hr />
-      <p class="card-text fs-6">
-        EdgeXFoundry uses a microservices architecture, each service is running independently,
-        please make sure that the current service is already running, if you have manually started
-        the service, click the Refresh button.
-      </p>
-      <button type="button" class="btn btn-primary" @click="reping">
-        <span class="fw-bold"> <i class="bi bi-arrow-clockwise pe-1"></i>{{ refreshMsg }}</span>
-      </button>
-    </div>
+      </span>
+        <hr />
+        <p class="card-text fs-6">
+          EdgeXFoundry uses a microservices architecture, each service is running independently,
+          please make sure that the current service is already running, if you have manually started
+          the service, click the Refresh button.
+        </p>
+        <button type="button" class="btn btn-primary" @click="reping">
+          <span class="fw-bold"> <i class="bi bi-arrow-clockwise pe-1"></i>{{ refreshMsg }}</span>
+        </button>
+      </div>
+    </a-card>
   </div>
 
   <div v-else style="background: #ececec; padding: 10px" class="card-container">
@@ -50,6 +56,14 @@ export default defineComponent({
       activeKey: ref('1'),
     };
   },
+  data() {
+    return {
+      agentDown: false
+    }
+  },
+  methods: {
+
+  }
 });
 </script>
 

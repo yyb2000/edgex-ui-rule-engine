@@ -11,7 +11,7 @@
   </a-button>
   <br/>
 
-  <a-list size="large" bordered :data-source="data" style="margin-top: 10px">
+  <a-list size="large" bordered :data-source="streamInfo" style="margin-top: 10px">
     <template #renderItem="{ item }" >
       <a-list-item style="padding-left: 15px; padding-right: 10px; margin-top: auto;">
         <tags-filled style="padding-right: 5px; font-size: 30px; color: gray"/>
@@ -34,7 +34,9 @@ import { UnorderedListOutlined, SyncOutlined ,PlusCircleFilled, TagsFilled, Edit
 import {defineComponent} from 'vue';
 import { allStreams } from '@/api/index'
 
-const data = [];
+let StreamInfo = function (id) {
+  this.id = id;
+}
 
 export default defineComponent({
   name: "StreamList",
@@ -46,13 +48,24 @@ export default defineComponent({
     EditFilled,
     DeleteFilled,
   },
-  setup(){
-    return{
-      data,
-    };
+  setup() {},
+  data() {
+    return {
+      streamInfo: [],
+      refreshMsg: 'Refresh',
+      refreshDone: null,
+      refreshFailed: null,
+      hideRefreshMsg: null,
+    }
   },
   created() {
-    this.getStreamList();
+    this.getStreamList()
+    this.refreshDone = this.createAlert('refresh succeeded!', 'success')
+    this.refreshFailed = this.createAlert('refresh failed!', 'danger')
+    this.hideRefreshMsg = this.debounce(() => {
+      this.refreshDone.hide()
+      this.refreshFailed.hide()
+    }, 2000)
   },
   methods: {
     addStream(){
@@ -66,23 +79,43 @@ export default defineComponent({
       })
     },
     getStreamList() {
-      let _this = this;
-      let streamList = [];
+      let _this = this
+      let streamInfo = new StreamInfo()
 
       return allStreams(
-          _this.services,
           data => {
-            console.log(data);
-
+            console.log(data)
+            streamInfo = data
           },
           error => {
-            console.log('get health state error:', error)
+            console.log('get stream info failed:', error)
           },
           () => {
-            _this.data = streamList
+            _this.streamInfo = streamInfo
           }
       )
     },
+    refreshStreams(event) {
+      let _this = this
+
+      let button = event.target
+      _this.refreshMsg = 'Loading...'
+      button.disabled = true
+
+      _this
+        .getStreamList()
+          .then(() => {
+            _this.refreshDone.show()
+          })
+          .catch(() => {
+            _this.refreshFailed.show()
+          })
+          .finally(() => {
+            _this.refreshMsg = 'Refresh'
+            button.disabled = false
+            _this.hideRefreshMsg()
+          })
+    }
   }
 })
 </script>
