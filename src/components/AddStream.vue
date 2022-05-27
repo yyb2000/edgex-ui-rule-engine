@@ -36,9 +36,10 @@
             </span>
           </div>
           <SqlEditor
-            ref="sqleditor"
-            :value="content"
-            @changeTextarea="changeTextarea($event)">
+              ref="sqleditor"
+              :value="content"
+              @changeTextarea="changeTextarea($event)"
+          >
           </SqlEditor>
         </div>
       </a-tab-pane>
@@ -56,6 +57,7 @@ import { defineComponent, ref } from 'vue';
 import {FileAddOutlined, SaveFilled, HomeFilled, MenuUnfoldOutlined} from '@ant-design/icons-vue';
 import RuleList from "@/components/RuleList";
 import SqlEditor from "@/components/SqlEditor";
+import { addStream } from '@/api/index'
 
 export default defineComponent({
   name: "AddStream",
@@ -66,6 +68,12 @@ export default defineComponent({
     MenuUnfoldOutlined,
     SqlEditor,
     RuleList
+  },
+  data() {
+    return {
+      content: '',
+      streamIsNullMsg: false
+    }
   },
   methods: {
     EdgexEditor(){
@@ -83,6 +91,26 @@ export default defineComponent({
     FormatSql() {
       this.$refs.sqleditor.sqlformat();
     },
+    SubmitStreams() {
+      let sqlContent = this.$refs.sqleditor.getSqlValue()
+
+      console.log(sqlContent)
+
+
+      return addStream(
+          sqlContent,
+          () => {
+          },
+          error => {
+            console.log('add stream info failed:', error)
+          },
+          () => {
+            this.$router.push({
+              path: '/'
+            })
+          }
+      )
+    }
   },
   setup() {
     const value = ref(1);
@@ -91,6 +119,7 @@ export default defineComponent({
       value,
     };
   },
+
 });
 </script>
 

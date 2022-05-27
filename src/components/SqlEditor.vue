@@ -221,6 +221,12 @@ export default {
       sqlContent=this.editor.getValue();
       /*将sql内容进行格式后放入编辑器中*/
       this.editor.setValue(format(sqlContent,{language:'postgresql'}));
+    },
+
+    getSqlValue() {
+      let sqlValue = ''
+      sqlValue = this.editor.getValue()
+      return sqlValue
     }
   }
 };

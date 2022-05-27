@@ -2,7 +2,7 @@
   <a-collapse v-model:activeKey="activeKey">
     <a-collapse-panel key="1" :show-arrow="false">
       <template #header>
-        <div class="card-header" style="background:none;">
+        <div>
           <a-button style="border: none; background: none" @click="collapseToggle">
             <template #icon><tags-filled style="color: #007BFF; font-size: large"/></template>
             <span style="font-weight: bold; font-size: 15px; color: #007BFF">

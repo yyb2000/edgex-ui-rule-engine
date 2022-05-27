@@ -98,7 +98,7 @@
                 </template>
                 <div class="card-header" style="background: #00000008; height: 44px">
                   <span style="font-weight: bold; font-size: 15px">
-                    <plus-outlined style="color: #17A2B8; padding-left: 17px; padding-top: 10px; font-size: large"/>
+                    <plus-outlined style="color: #17A2B8;padding-top: 10px; font-size: large"/>
                     Add Action
                   </span>
                   <span style="float: right; color: #DC3545; font-size: 15px; padding-right: 10px; padding-top: 10px">
@@ -106,9 +106,8 @@
                     at least one rule action required!
                   </span>
                 </div>
-                <div class="card-body">
                   <sink-list></sink-list>
-                </div>
+
 
               </a-form-item>
 

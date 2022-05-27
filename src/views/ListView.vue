@@ -11,16 +11,17 @@
         This could be a network reason, or it could be that the rule engine microservice is not
         running, make sure there is no network problem or that the system agent service is already
         running!
-      </span>
-        <hr />
-        <p class="card-text fs-6">
+        </span>
+        <br />
+        <span>
           EdgeXFoundry uses a microservices architecture, each service is running independently,
           please make sure that the current service is already running, if you have manually started
           the service, click the Refresh button.
-        </p>
-        <button type="button" class="btn btn-primary" @click="reping">
-          <span class="fw-bold"> <i class="bi bi-arrow-clockwise pe-1"></i>{{ refreshMsg }}</span>
-        </button>
+        </span>
+        <a-button style="font-size: large; background: #007BFF; border-radius: 4px" @click="reping">
+          <template #icon><sync-outlined style="color: white"/></template>
+          <span>{{ refreshMsg }}</span>
+        </a-button>
       </div>
     </a-card>
   </div>
@@ -45,11 +46,16 @@
 import { defineComponent, ref } from 'vue';
 import StreamList from "@/components/StreamList";
 import RuleList from "@/components/RuleList";
+import {ping} from "@/api";
+import { SyncOutlined} from '@ant-design/icons-vue';
+
+
 export default defineComponent({
   name: 'ListView',
   components:{
     StreamList,
-    RuleList
+    RuleList,
+    SyncOutlined
   },
   setup() {
     return {
@@ -58,11 +64,46 @@ export default defineComponent({
   },
   data() {
     return {
-      agentDown: false
+      agentDown: false,
+      pingFailed: null,
+      hideRefreshMsg: null,
+
     }
   },
   methods: {
+    ping() {
+      let _this = this
 
+      return ping(
+          () => {
+            _this.agentDown = false
+          },
+          error => {
+            console.log('ping failed:', error)
+            _this.agentDown = true
+          }
+      )
+    },
+    reping(event) {
+      let _this = this
+
+      let button = event.target
+      _this.refreshMsg = 'Loading...'
+      button.disabled = true
+
+      let result = _this
+          .ping()
+          .catch(() => {
+            _this.pingFailed.show()
+          })
+          .finally(() => {
+            _this.refreshMsg = 'Refresh'
+            button.disabled = false
+            _this.hideRefreshMsg()
+          })
+
+      return result
+    },
   }
 });
 </script>

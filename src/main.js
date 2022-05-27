@@ -6,6 +6,10 @@ import store from './store'
 import './public-path.js'
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import BootstrapVue3 from 'bootstrap-vue-3'
 
 const APP_NAME = require('../package.json').name
 
@@ -67,6 +71,9 @@ function render(props = {}) {
 
         let wrapper = document.createElement('div')
 
+        // wrapper.innerHTML =
+        //     `<a-alert type= {{alterType}}>${message}</a-alert>`
+
         wrapper.innerHTML = `<div class="alert alert-${alertType} position-fixed fixed-top text-center rounded-3 mt-3 m-auto p-2 w-25" role="alert"> ${message} </div>`
 
         document.getElementById('app').append(wrapper)
@@ -97,6 +104,7 @@ function render(props = {}) {
         .use(router)
         .use(store)
         .use(Antd)
+        .use(BootstrapVue3)
         .mount(container ? container.querySelector('#app') : '#app')
 }
 

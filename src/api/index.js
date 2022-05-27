@@ -17,17 +17,17 @@ export function ping(success, error, final) {
 }
 
 export function addStream(streamSql, success, error, final) {
+    let body = JSON.stringify(
+        {
+            'sql': streamSql
+        }
+    )
+
     return post(
         `${streamUrl}`,
-        streamSql,
+        body,
         res => {
-            res = res[0]
-            if (res.statusCode.toString().startsWith('2')) {
-                success(res)
-            } else {
-                error(res?.message)
-                throw res?.message
-            }
+            console.log(res)
         },
         err => {
             console.log('addStream error:', err)
@@ -43,13 +43,7 @@ export function deleteOneStreamById(id, success, error, final) {
     return delete1(
         url,
         res => {
-            res = res[0];
-            if (res.statusCode.toString().startsWith('2')) {
-                success(res)
-            } else {
-                error(res?.message);
-                throw res?.message
-            }
+            console.log(res)
         },
         err => {
             console.log('deleteOneStreamById error:', err);
@@ -115,13 +109,7 @@ export function deleteOneRuleById(id, success, error, final) {
     return delete1(
         url,
         res => {
-            res = res[0];
-            if (res.statusCode.toString().startsWith('2')) {
-                success(res)
-            } else {
-                error(res?.message);
-                throw res?.message
-            }
+            console.log(res)
         },
         err => {
             console.log('deleteOneStreamById error:', err);

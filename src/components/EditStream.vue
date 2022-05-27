@@ -42,6 +42,9 @@ import { defineComponent} from 'vue';
 import SqlEditor from "@/components/SqlEditor";
 import RuleList from "@/components/RuleList";
 import {HomeFilled, SaveFilled, MenuUnfoldOutlined, EditFilled} from '@ant-design/icons-vue';
+import { useRouter } from "vue-router";
+import { findStreamByName } from '@/api/index'
+
 export default defineComponent({
   name: "EditStream",
   components: {
@@ -52,8 +55,19 @@ export default defineComponent({
     MenuUnfoldOutlined,
     EditFilled
   },
+  data() {
+    return {
+      content: '',
+      name: ''
+    }
+  },
+  created() {
+    this.getStreamSql()
+  },
+  setup(){
+  },
   methods: {
-    returnStreamList(){
+    returnStreamList() {
       console.log("return list")
       this.$router.push({
         path: '/'
@@ -62,6 +76,17 @@ export default defineComponent({
     FormatSql() {
       this.$refs.sqleditor.sqlformat();
     },
+    getStreamSql() {
+      const router = useRouter()
+      this.name = router.currentRoute.value.query.id
+
+      return findStreamByName(
+          this.name,
+          data => {
+            console.log(data)
+          }
+      )
+    }
   }
 })
 </script>
