@@ -18,9 +18,11 @@
         </div>
       </template>
       <a-card >
+<!--        :model="sinkBaseProperties"-->
         <a-form
-            :model="sinkBaseProperties"
             name="advanced"
+            :value="sinkBaseProperties"
+
         >
 
           <a-form-item name="concurrency">
@@ -33,7 +35,9 @@
                 <question-circle-outlined style="font-size: large"/>
               </a-popover>
             </template>
-            <a-input v-model:value="sinkBaseProperties.concurrency" type="number"></a-input>
+<!--            <a-input v-model:value="sinkBaseProperties.concurrency" type="number"></a-input>-->
+            <a-input :value="sinkBaseProperties.concurrency" type="number" @input="changeValConcurrency"></a-input>
+
           </a-form-item>
 
           <a-form-item name="bufferLength">
@@ -46,7 +50,7 @@
                 <question-circle-outlined style="font-size: large"/>
               </a-popover>
             </template>
-            <a-input v-model:value="sinkBaseProperties.bufferLength" type="number"></a-input>
+            <a-input :value="sinkBaseProperties.bufferLength" type="number" @input="changeValbufferLength"></a-input>
           </a-form-item>
 
           <a-form-item name="retryInterval">
@@ -59,7 +63,7 @@
                 <question-circle-outlined style="font-size: large"/>
               </a-popover>
             </template>
-            <a-input v-model:value="sinkBaseProperties.retryInterval" type="number"></a-input>
+            <a-input :value="sinkBaseProperties.retryInterval" type="number" @input="changeValretryInterval"></a-input>
           </a-form-item>
 
           <a-form-item name="retryCount">
@@ -72,7 +76,7 @@
                 <question-circle-outlined style="font-size: large"/>
               </a-popover>
             </template>
-            <a-input v-model:value="sinkBaseProperties.retryCount" type="number"></a-input>
+            <a-input :value="sinkBaseProperties.retryCount" type="number" @input="changeValretryCount"></a-input>
           </a-form-item>
 
           <a-form-item name="cacheLength">
@@ -85,7 +89,7 @@
                 <question-circle-outlined style="font-size: large"/>
               </a-popover>
             </template>
-            <a-input v-model:value="sinkBaseProperties.cacheLength" type="number"></a-input>
+            <a-input :value="sinkBaseProperties.cacheLength" type="number" @input="changeValcacheLength"></a-input>
           </a-form-item>
 
           <a-form-item name="cacheSaveInterval">
@@ -98,7 +102,7 @@
                 <question-circle-outlined style="font-size: large"/>
               </a-popover>
             </template>
-            <a-input v-model:value="sinkBaseProperties.cacheSaveInterval" type="number"></a-input>
+            <a-input :value="sinkBaseProperties.cacheSaveInterval" type="number" @input="changeValcacheSaveInterval"></a-input>
           </a-form-item>
 
 
@@ -112,7 +116,7 @@
                 <question-circle-outlined style="font-size: large"/>
               </a-popover>
             </template>
-            <a-select v-model:value="sinkBaseProperties.runAsync">
+            <a-select :value="sinkBaseProperties.runAsync" @change="changeValrunAsync">
               <a-select-option value="false">false</a-select-option>
               <a-select-option value="true">true</a-select-option>
             </a-select>
@@ -128,19 +132,20 @@
                 <question-circle-outlined style="font-size: large"/>
               </a-popover>
             </template>
-            <a-select v-model:value="sinkBaseProperties.omitIfEmpty">
+            <a-select :value="sinkBaseProperties.omitIfEmpty" @change="changeValomitIfEmpty">
               <a-select-option value="false">false</a-select-option>
               <a-select-option value="true">true</a-select-option>
             </a-select>
           </a-form-item>
         </a-form>
+        <a-button type="primary" @click="logSinkBaseProperty">Primary Button</a-button>
       </a-card>
     </a-collapse-panel>
   </a-collapse>
 </template>
 
 <script>
-import {defineComponent, reactive, ref} from 'vue';
+import {defineComponent, ref} from 'vue';
 import {TagsFilled, QuestionCircleOutlined,CaretDownOutlined, CaretUpOutlined} from '@ant-design/icons-vue';
 
 export default defineComponent({
@@ -151,21 +156,27 @@ export default defineComponent({
     CaretDownOutlined,
     CaretUpOutlined,
   },
+  props:{
+    sinkBaseProperties:{
+      type:Object,
+    },
+  },
   setup(){
     const activeKey = ref([]);
-    const sinkBaseProperties = reactive({
-      concurrency: 1,
-      bufferLength: 1024,
-      retryInterval: 1000,
-      retryCount: 0,
-      cacheLength: 1024,
-      cacheSaveInterval: 1000,
-      runAsync: false,
-      omitIfEmpty: false
-    });
+    // const sinkBaseProperties = reactive({
+    //   concurrency: 1,
+    //   bufferLength: 1024,
+    //   retryInterval: 1000,
+    //   retryCount: 0,
+    //   cacheLength: 1024,
+    //   cacheSaveInterval: 1000,
+    //   runAsync: false,
+    //   omitIfEmpty: false
+    // });
+
     let collapseToggleStatus = false;
     return {
-      sinkBaseProperties,
+      // sinkBaseProperties,
       collapseToggleStatus,
       activeKey
     }
@@ -177,7 +188,35 @@ export default defineComponent({
         return
       }
       this.collapseToggleStatus = true //open
-    }
+      console.log(this.sinkBaseProperties)
+    },
+    logSinkBaseProperty(){
+      console.log(this.sinkBaseProperties)
+    },
+    changeValConcurrency(e) {
+      this.$emit('update:sinkBaseProperties.concurrency', e.target.concurrency)
+    },
+    changeValbufferLength(e) {
+      this.$emit('update:sinkBaseProperties.bufferLength', e.target.bufferLength)
+    },
+    changeValretryInterval(e) {
+      this.$emit('update:sinkBaseProperties.retryInterval', e.target.retryInterval)
+    },
+    changeValretryCount(e) {
+      this.$emit('update:sinkBaseProperties.retryCount', e.target.retryCount)
+    },
+    changeValcacheLength(e) {
+      this.$emit('update:sinkBaseProperties.cacheLength', e.target.cacheLength)
+    },
+    changeValcacheSaveInterval(e) {
+      this.$emit('update:sinkBaseProperties.cacheSaveInterval', e.target.cacheSaveInterval)
+    },
+    changeValrunAsync(e) {
+      this.$emit('update:sinkBaseProperties.runAsync', e.target.runAsync)
+    },
+    changeValomitIfEmpty(e) {
+      this.$emit('update:sinkBaseProperties.omitIfEmpty', e.target.omitIfEmpty)
+    },
   }
 })
 </script>

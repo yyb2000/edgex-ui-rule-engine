@@ -42,6 +42,7 @@
 
       <a-form-item
           name="sinkBaseProperties"
+
       >
         <template #label>
           <span style="margin-right: 10px">Options</span>
@@ -52,7 +53,11 @@
             <question-circle-outlined style="font-size: large"/>
           </a-popover>
         </template>
-        <sink-base-properties></sink-base-properties>
+        <a-button type="primary" @click="logSinkBaseProperty">Primary Button</a-button>
+        <sink-base-properties
+            v-model:sinkBaseProperties="sinkBaseProperties"
+        >
+        </sink-base-properties>
 <!--        TODO-->
 <!--        onSinkBasePropertiesChange(sinkBaseProperties: SinkBaseProperties) {-->
 <!--          Object.assign(this.logSink, sinkBaseProperties)-->
@@ -82,8 +87,25 @@ export default defineComponent({
       sendSingle: 'false',
       dataTemplate: ''
     });
+    const sinkBaseProperties = reactive({
+      concurrency: 1,
+      bufferLength: 1024,
+      retryInterval: 1000,
+      retryCount: 0,
+      cacheLength: 1024,
+      cacheSaveInterval: 1000,
+      runAsync: false,
+      omitIfEmpty: false
+    });
     return {
-      logSink
+      logSink,
+      sinkBaseProperties,
+    }
+  },
+  methods: {
+    logSinkBaseProperty(){
+      console.log(this.sinkBaseProperties)
+      console.log(this.sinkBaseProperties.concurrency)
     }
   }
 })
