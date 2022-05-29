@@ -4,9 +4,9 @@
       <a-tab-pane key="1" tab="Stream">
         <div class="card-header header">
           <span><edit-filled style="color: red"/> Edit Stream</span>
-          <a-button style="background: #28A745; float: right" @click="SubmitStreams">
+          <a-button style="background: #28A745; float: right" @click="UpdateStream">
             <template #icon><save-filled style="color: white"/></template>
-            <span style="font-weight: bold; color: white">Submit</span>
+            <span style="font-weight: bold; color: white">Update</span>
           </a-button>
           <a-button style="background: #007BFF; float: right" @click="returnStreamList">
             <template #icon><home-filled style="color:white;"/></template>
@@ -24,7 +24,7 @@
           <SqlEditor
               ref="sqleditor"
               :value="content"
-              @changeTextarea="changeTextarea($event)">
+          >
           </SqlEditor>
         </div>
       </a-tab-pane>
@@ -43,7 +43,7 @@ import SqlEditor from "@/components/SqlEditor";
 import RuleList from "@/components/RuleList";
 import {HomeFilled, SaveFilled, MenuUnfoldOutlined, EditFilled} from '@ant-design/icons-vue';
 import { useRouter } from "vue-router";
-import { findStreamByName } from '@/api/index'
+import { findStreamByName, updateStream} from '@/api/index'
 
 export default defineComponent({
   name: "EditStream",
@@ -58,7 +58,13 @@ export default defineComponent({
   data() {
     return {
       content: '',
-      name: ''
+      name: '',
+      streamJSONFormatObj: '',
+      StreamFields: {
+        Name: '',
+        FieldType: ''
+      },
+      streamStringFormatObj: ''
     }
   },
   created() {
@@ -83,7 +89,51 @@ export default defineComponent({
       return findStreamByName(
           this.name,
           data => {
-            console.log(data)
+            this.streamJSONFormatObj = data
+            this.dataFormatJSONToStringConvertor()
+            this.$refs.sqleditor.setSqlValue(this.streamStringFormatObj);
+            this.FormatSql()
+          },
+          error => {
+            console.log('get stream info failed:', error)
+          },
+          () => {}
+      )
+    },
+    dataFormatJSONToStringConvertor() {
+      if (!this.streamJSONFormatObj) {
+        return
+      }
+
+      let fieldsKVFormatArray = []
+      this.streamJSONFormatObj?.StreamFields?.forEach((field) => {
+        fieldsKVFormatArray.push(`${field.Name} ${field.FieldType}`)
+      })
+
+      let streamOptKVFormatArray = [];
+      for (const [k,v] of Object.entries(this.streamJSONFormatObj.Options)) {
+        streamOptKVFormatArray.push(`${k} = "${v}"`)
+      }
+
+      this.streamStringFormatObj = `CREATE STREAM ${this.streamJSONFormatObj?.Name} ( ${fieldsKVFormatArray.join(', ')} ) WITH ( ${streamOptKVFormatArray.join(', ')} )`
+      console.log(this.streamStringFormatObj)
+    },
+    UpdateStream() {
+      let sqlContent = this.$refs.sqleditor.getSqlValue()
+
+      return updateStream(
+
+          sqlContent,
+          this.name,
+          ()=>{
+          },
+          error => {
+            console.log('edit stream info failed:', error)
+          },
+          () => {
+            this.$router.push({
+              path: '/'
+            })
           }
       )
     }

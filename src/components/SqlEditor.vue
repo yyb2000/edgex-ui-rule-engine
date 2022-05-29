@@ -25,6 +25,7 @@ require("codemirror/mode/sql/sql");
 require("codemirror/addon/hint/show-hint");
 require("codemirror/addon/hint/sql-hint");
 
+import {markRaw} from 'vue'
 export default {
   name: "SqlEditor",
   props: {
@@ -53,6 +54,9 @@ export default {
       type: String,
       default: ""
     }
+  },
+  setup() {
+
   },
   data() {
     return {
@@ -108,7 +112,8 @@ export default {
     }
   },
   mounted() {
-    this.editor = CodeMirror.fromTextArea(this.$refs.sqlEditor, {
+    // this.editor = markRaw(new CodeMirror());
+    this.editor = markRaw(new CodeMirror.fromTextArea(this.$refs.sqlEditor, {
       // value: this.value,
       mode: { name: "text/x-hive" },
       indentWithTabs: true,
@@ -150,10 +155,10 @@ export default {
         "'.'": this.completeAfter,
         "Ctrl-Alt-L": this.format
       }
-      //   hintOptions: {
-      //     tables: this.dataBaseTips,
-      //   },
-    });
+        // hintOptions: {
+        //   tables: this.dataBaseTips,
+        // },
+    }));
 
     this.editor.setSize("100%", this.editorHeight);
     // 监听inputRead事件，实现代码自动提示功能
@@ -166,37 +171,26 @@ export default {
       this.$emit("getSelectContent", somethingSelected, getSelection);
     });
 
-    // this.editor.on("keyup", function (cm ,e) {
-    //   var arrows = [37, 38, 39, 40];
-    //   if (arrows.indexOf(e) < 0) {
-    //     this.editor.execCommand("autocomplete")
-    //   }
-    // });
+    this.editor.on("keyup", function (cm ,e) {
+      var arrows = [37, 38, 39, 40];
+      if (arrows.indexOf(e) < 0) {
+        this.editor.execCommand("autocomplete")
+      }
+    });
   },
 
   methods: {
-    // templateTypeToggle(template){
-    //   if (template == 'EDGEX'){
-    //     this.editor.setValue('CREATE STREAM EdgeXStream () WITH ( FORMAT = "JSON", TYPE = "edgex" )');
-    //     console.log('3');
-    //   }
-    //   else if (template == 'CUSTOM'){
-    //     this.editor.setValue('CREATE STREAM demo ( field1 bigint, field2 float ) WITH ( DATASOURCE = "", KEY = "", FORMAT = "JSON", CONF_KEY = "", TYPE = "edgex", STRICT_VALIDATION = "true", TIMESTAMP = "", TIMESTAMP_FORMAT = "", RETAIN_SIZE = "0", SHARED = "false" )');
-    //   }
-    //   else {
-    //     this.editor.setValue('');
-    //   }
-    // },
-    // edegxTemplate(){
-    //   this.editor.setValue('CREATE STREAM EdgeXStream () WITH ( FORMAT = "JSON", TYPE = "edgex" )');
-    //
-    // },
-    // customTemplate(){
-    //   this.editor.setValue('CREATE STREAM demo ( field1 bigint, field2 float ) WITH ( DATASOURCE = "", KEY = "", FORMAT = "JSON", CONF_KEY = "", TYPE = "edgex", STRICT_VALIDATION = "true", TIMESTAMP = "", TIMESTAMP_FORMAT = "", RETAIN_SIZE = "0", SHARED = "false" )');
-    //   this.sqlformat();
-    //
-    // },
+    edegxTemplate(){
+      this.editor.setValue('CREATE STREAM EdgeXStream () WITH ( FORMAT = "JSON", TYPE = "edgex" )');
+
+    },
+    customTemplate(){
+      this.editor.setValue('CREATE STREAM demo ( field1 bigint, field2 float ) WITH ( DATASOURCE = "", KEY = "", FORMAT = "JSON", CONF_KEY = "", TYPE = "edgex", STRICT_VALIDATION = "true", TIMESTAMP = "", TIMESTAMP_FORMAT = "", RETAIN_SIZE = "0", SHARED = "false" )');
+      this.sqlformat();
+
+    },
     tableInfoChange(val) {
+
       if (val) {
         let getCursor = this.editor.doc.getCursor();
         let pos = {};
@@ -227,6 +221,11 @@ export default {
       let sqlValue = ''
       sqlValue = this.editor.getValue()
       return sqlValue
+    },
+
+    setSqlValue(content) {
+      this.editor.setValue(content)
+
     }
   }
 };

@@ -112,6 +112,10 @@ if (!window.__POWERED_BY_QIANKUN__) {
     render({})
 }
 
+export async function bootstrap() {
+    console.log('[micro-system] vue app bootstraped')
+}
+
 export async function mount(props) {
     console.log('[micro-system] props from main framework', props)
 

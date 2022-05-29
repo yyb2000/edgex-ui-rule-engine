@@ -87,19 +87,25 @@ export default defineComponent({
   },
   data() {
     return {
-      adding
+      adding,
+      MQTT_SINK: "mqtt",
+      LOG_SINK: "log",
+      NOP_SINK: "nop",
     }
   },
   methods: {
     addSinkTransfer() {
-      let _this = this
-      console.log(adding)
-      if (adding === true) {
-        _this.adding = false
-      } else {
-        _this.adding = true
+      let that = this
+      if (that.adding) {
+        console.log(that.adding)
+        that.adding = false
+        console.log(that.adding)
       }
-      console.log(adding)
+      else if (!that.adding) {
+        console.log(that.adding)
+        that.adding = true
+        console.log(that.adding)
+      }
     }
   }
 })

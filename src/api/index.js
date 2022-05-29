@@ -55,18 +55,18 @@ export function deleteOneStreamById(id, success, error, final) {
 }
 
 export function updateStream(sqlformatOfStreamData, streamNameOrID, success, error, final) {
+    let body = JSON.stringify(
+        {
+            'sql': sqlformatOfStreamData
+        }
+    )
+
     let url = `${streamUrl}/${streamNameOrID}`;
     return put(
         url,
-        sqlformatOfStreamData,
+        body,
         res => {
-            res = res[0]
-            if (res.statusCode.toString().startsWith('2')) {
-                success(res)
-            } else {
-                error(res?.message)
-                throw res?.message
-            }
+            console.log(res)
         },
         err => {
             console.log('updateStream error:', err)
@@ -231,6 +231,58 @@ export function getRuleTopoById(id, success, error, final) {
     return get(url, null, success, error, final)
 }
 
+export class SinkBaseProperties {
+    constructor(concurrency, bufferLength, runAsync, retryInterval, retryCount, cacheLength, cacheSaveInterval, omitIfEmpty, sendSingle, dataTemplate ) {
+        this.concurrency = concurrency
+        this.bufferLength = bufferLength
+        this.runAsync = runAsync
+        this.retryInterval = retryInterval
+        this.retryCount = retryCount
+        this.cacheLength = cacheLength
+        this.cacheSavaInterval = cacheSaveInterval
+        this.omitIfEmpty = omitIfEmpty
+        this.sendSingle = sendSingle
+        this.dataTemplate = dataTemplate
+    }
+}
+
+// export class Sink {
+//
+//     uuid?: string, // kuiper's sink model doesn't have a uuid,here designed by EdgeXGUI, used as an assistant for array operation.
+//     mqtt: MQTTSink,
+//     log: LogSink,
+//     nop: NopSink,
+// }
+
+// export class MQTTSink extends SinkBaseProperties {
+//
+//
+//     server: string,
+//     topic: string,
+//     clientId: string,
+//     protocolVersion: string,
+//     username: string,
+//     password: string,
+//     qos: number,
+//     retained: boolean,
+//
+//     certificationPath: string,
+//     privateKeyPath: string,
+//     rootCaPath: string,
+//     insecureSkipVerify: boolean,
+//
+//     connectionSelector: string,
+// }
+
+export class LogSink extends SinkBaseProperties {
+    constructor() {
+        super();
+    }
+}
+
+// export class NopSink extends SinkBaseProperties {
+//     log: boolean //true/false - print the sink result to log or not. By default is false, that will not print the result to log file.
+// }
 
 
 
